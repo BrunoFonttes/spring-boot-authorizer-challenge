@@ -60,6 +60,18 @@ public class GlobalExceptionHandler {
         return result;
     }
 
+    @ResponseBody
+    @ExceptionHandler(InsufficienteBalanceException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String,String> insufficienteBalanceException(InsufficienteBalanceException exception){
+
+        Map<String,String> result=new HashMap<>();
+        result.put("errorMessage",exception.getMessage());
+
+        return result;
+    }
+
+
     private ResponseEntity<Object> buildErrorResponse(Exception exception,
                                                       HttpStatus httpStatus,
                                                       WebRequest request) {
@@ -76,6 +88,7 @@ public class GlobalExceptionHandler {
         }
         return ResponseEntity.status(httpStatus).body(errorResponse);
     }
+
 
     private boolean isTraceOn(WebRequest request) {
         String[] value = request.getParameterValues(TRACE);
