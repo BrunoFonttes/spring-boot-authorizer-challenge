@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -61,9 +62,55 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseBody
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String,String> httpMessageNotReadableException(HttpMessageNotReadableException exception){
+
+        Map<String,String> result=new HashMap<>();
+        result.put("errorMessage","MALFORMED_JSON");
+
+        return result;
+    }
+
+
+    @ResponseBody
     @ExceptionHandler(InsufficienteBalanceException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public Map<String,String> insufficienteBalanceException(InsufficienteBalanceException exception){
+
+        Map<String,String> result=new HashMap<>();
+        result.put("errorMessage",exception.getMessage());
+
+        return result;
+    }
+
+
+    @ResponseBody
+    @ExceptionHandler(CardNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String,String> cardNotFoundException(CardNotFoundException exception){
+
+        Map<String,String> result=new HashMap<>();
+        result.put("errorMessage",exception.getMessage());
+
+        return result;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(CardAlreadyExistentException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public Map<String,String> cardAlreadyExistentException(CardAlreadyExistentException exception){
+
+        Map<String,String> result=new HashMap<>();
+        result.put("errorMessage",exception.getMessage());
+
+        return result;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(InvalidPasswordException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public Map<String,String> invalidPasswordException(InvalidPasswordException exception){
 
         Map<String,String> result=new HashMap<>();
         result.put("errorMessage",exception.getMessage());
