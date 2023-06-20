@@ -11,7 +11,7 @@ public class NewCardDTO {
     @NotBlank(message = "A senha eh obrigatoria.")
     private final String senha;
 
-    public NewCardDTO(String numeroCartao, String senha){
+    public NewCardDTO(String numeroCartao, String senha) {
         this.numeroCartao = numeroCartao;
         this.senha = senha;
     }

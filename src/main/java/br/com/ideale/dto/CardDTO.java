@@ -1,3 +1,4 @@
 package br.com.ideale.dto;
 
-public record CardDTO(Float balance){}
+public record CardDTO(Float balance) {
+}

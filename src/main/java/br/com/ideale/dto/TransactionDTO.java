@@ -12,7 +12,7 @@ public class TransactionDTO {
     @NotBlank(message = "A senha do cartao eh obrigatorio.")
     private String senhaCartao;
 
-    @Min(value = 0 , message= "O valor minimo eh 0")
+    @Min(value = 0, message = "O valor minimo eh 0")
     private Float valor;
 
 }

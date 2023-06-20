@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-@ConfigurationProperties(prefix="spring.jpa.hibernate")
+@ConfigurationProperties(prefix = "spring.jpa.hibernate")
 public class JpaHibernateProperties {
 
     @NotBlank

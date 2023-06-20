@@ -1,8 +1,8 @@
 package br.com.ideale.exception;
 
+import br.com.ideale.configs.properties.AppProperties;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import br.com.ideale.configs.properties.AppProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -25,14 +25,14 @@ public class GlobalExceptionHandler {
     @Autowired
     private AppProperties appProperties;
 
-    private boolean printStackTrace(){
+    private boolean printStackTrace() {
         return this.appProperties.getTrace();
     }
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected  Map<String, List<String>> handleMethodArgumentNotValid(
+    protected Map<String, List<String>> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, WebRequest request) {
 
         Map<String, List<String>> result = new HashMap<>();
@@ -46,10 +46,11 @@ public class GlobalExceptionHandler {
 
         return result;
     }
+
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public  Map<String, List<String>> constraintViolationException(ConstraintViolationException ex, WebRequest request) {
+    public Map<String, List<String>> constraintViolationException(ConstraintViolationException ex, WebRequest request) {
         List<String> errors = new ArrayList<>();
 
         ex.getConstraintViolations().forEach(cv -> errors.add(cv.getMessage()));
@@ -64,10 +65,10 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String,String> httpMessageNotReadableException(HttpMessageNotReadableException exception){
+    public Map<String, String> httpMessageNotReadableException(HttpMessageNotReadableException exception) {
 
-        Map<String,String> result=new HashMap<>();
-        result.put("errorMessage","MALFORMED_JSON");
+        Map<String, String> result = new HashMap<>();
+        result.put("errorMessage", "MALFORMED_JSON");
 
         return result;
     }
@@ -76,10 +77,10 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(InsufficienteBalanceException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public Map<String,String> insufficienteBalanceException(InsufficienteBalanceException exception){
+    public Map<String, String> insufficienteBalanceException(InsufficienteBalanceException exception) {
 
-        Map<String,String> result=new HashMap<>();
-        result.put("errorMessage",exception.getMessage());
+        Map<String, String> result = new HashMap<>();
+        result.put("errorMessage", exception.getMessage());
 
         return result;
     }
@@ -88,10 +89,10 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(CardNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String,String> cardNotFoundException(CardNotFoundException exception){
+    public Map<String, String> cardNotFoundException(CardNotFoundException exception) {
 
-        Map<String,String> result=new HashMap<>();
-        result.put("errorMessage",exception.getMessage());
+        Map<String, String> result = new HashMap<>();
+        result.put("errorMessage", exception.getMessage());
 
         return result;
     }
@@ -99,10 +100,10 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(CardAlreadyExistentException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public Map<String,String> cardAlreadyExistentException(CardAlreadyExistentException exception){
+    public Map<String, String> cardAlreadyExistentException(CardAlreadyExistentException exception) {
 
-        Map<String,String> result=new HashMap<>();
-        result.put("errorMessage",exception.getMessage());
+        Map<String, String> result = new HashMap<>();
+        result.put("errorMessage", exception.getMessage());
 
         return result;
     }
@@ -110,10 +111,10 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(InvalidPasswordException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public Map<String,String> invalidPasswordException(InvalidPasswordException exception){
+    public Map<String, String> invalidPasswordException(InvalidPasswordException exception) {
 
-        Map<String,String> result=new HashMap<>();
-        result.put("errorMessage",exception.getMessage());
+        Map<String, String> result = new HashMap<>();
+        result.put("errorMessage", exception.getMessage());
 
         return result;
     }
