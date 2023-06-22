@@ -3,13 +3,10 @@ package br.com.ideale.controller;
 import br.com.ideale.dto.CardDTO;
 import br.com.ideale.dto.NewCardDTO;
 import br.com.ideale.dto.TransactionDTO;
-import br.com.ideale.exception.CardAlreadyExistentException;
-import br.com.ideale.exception.CardNotFoundException;
-import br.com.ideale.model.Card;
 import br.com.ideale.service.CardService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import br.com.ideale.domain.Card;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
