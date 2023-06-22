@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app.properties")
 public class AppProperties {
 
+    @NotNull
     private final Boolean trace;
     @Autowired
     private JpaHibernateProperties jpaHibernateProperties;
