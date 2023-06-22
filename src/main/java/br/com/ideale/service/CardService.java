@@ -2,36 +2,42 @@ package br.com.ideale.service;
 
 import br.com.ideale.exception.CardAlreadyExistentException;
 import br.com.ideale.exception.CardNotFoundException;
-import br.com.ideale.model.Card;
+import br.com.ideale.domain.Card;
+import br.com.ideale.mappers.CardMapper;
 import br.com.ideale.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CardService {
     @Autowired
     private CardRepository cardRepository;
 
     public void newCard(Card card) {
         try {
-            cardRepository.save(card);
+            cardRepository.save(CardMapper.fromDomainToModel(card));
         } catch (Exception error) {
-            assert error instanceof DataIntegrityViolationException:new CardAlreadyExistentException();
+            if(error instanceof DataIntegrityViolationException) {
+                throw new CardAlreadyExistentException();
+            }
             throw error;
         }
     }
 
     public Card getCardBy(String cardNumber) {
-        return cardRepository.findByCardNumber(cardNumber);
+        return CardMapper.fromModelToDomain(cardRepository.findByCardNumber(cardNumber));
     }
 
     public void newTransaction(String cardNumber, String password, Float value) {
-        Card card = cardRepository.findByCardNumber(cardNumber);
-        assert card != null: new CardNotFoundException();
-        card
-                .new AuthorizedOperations(password)
-                .consumeBalance(value);
+        Card card = CardMapper.fromModelToDomain(cardRepository.findByCardNumber(cardNumber));
+        if(card == null) throw new CardNotFoundException();
 
-        this.cardRepository.save(card);
+        Card.AuthorizedOperations authorizedCard = card
+                .new AuthorizedOperations(password);
+
+        authorizedCard.consumeBalance(value);
+
+        this.cardRepository.save(CardMapper.fromDomainToModel(card));
     }
-
 }
