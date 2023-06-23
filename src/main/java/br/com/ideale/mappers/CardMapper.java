@@ -1,7 +1,10 @@
 package br.com.ideale.mappers;
 
 import br.com.ideale.domain.Card;
+import br.com.ideale.exception.InternalExceptionHandler;
 import br.com.ideale.model.CardModel;
+
+import java.util.Objects;
 
 public class CardMapper {
 
@@ -14,23 +17,18 @@ public class CardMapper {
                 cardModel.getBalance()
         );
     }
-
     public static CardModel fromDomainToModel(Card card){
-        if(card==null) return null;
-
-        CardModel cardModel = new CardModel();
-        cardModel.setId(card.getId());
-        cardModel.setCardNumber(card.getCardNumber());
-        cardModel.setHashedPassword(card.getHashedPassword());
-        cardModel.setBalance(card.getBalance());
-        return cardModel;
+        return CardMapper.fromDomainToModel(card, new CardModel());
     }
 
-    public static CardModel fromDomainToModel(CardModel cardModel, Card card){
-        if(cardModel==null) return null;
-        if(card == null) return cardModel;
 
-        cardModel.setId(card.getId());
+
+    public static CardModel fromDomainToModel(Card card, CardModel cardModel){
+        if(cardModel==null){ throw new InternalExceptionHandler("card model should not be null"); }
+        if(card == null) return cardModel;
+        if(card.getId()!=null && !Objects.equals(card.getId(), cardModel.getId())){
+            throw new InternalExceptionHandler("card model id and card id must be equal");
+        }
         cardModel.setCardNumber(card.getCardNumber());
         cardModel.setHashedPassword(card.getHashedPassword());
         cardModel.setBalance(card.getBalance());
